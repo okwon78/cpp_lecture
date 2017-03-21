@@ -15,45 +15,45 @@ using namespace std;
 
 struct Object
 {
-    //Object() { std::cout << _str << " constructor" << std::endl; }
+    //Object() { cout << _str << " constructor" << endl; }
     
-    ~Object() { std::cout << _str <<" distructor" << std::endl; }
+    ~Object() { cout << _str <<" distructor" << endl; }
     
-    Object(const std::string& name) { 
+    Object(const string& name) { 
         _str = name; 
     }
     
     //Copy
     Object(const Object& rhs) {
         _str = rhs._str;
-        std::cout << "name: "<< _str << " copy constructor" << std::endl;
+        cout << "name: "<< _str << " copy constructor" << endl;
     }
     
     //Move
     Object(Object&& rhs) {
         _str.swap(rhs._str);
-        //_str = std::move(rhs._str);
-        std::cout << "name: "<< _str << " move constructor" << std::endl;
+        //_str = move(rhs._str);
+        cout << "name: "<< _str << " move constructor" << endl;
     }
     
     //Copy
     Object& operator=(const Object& rhs) {
         _str = rhs._str;
-        std::cout << "name: "<< _str << " copy operator" << std::endl;
+        cout << "name: "<< _str << " copy operator" << endl;
         return *this;
     }
     
     //Move
     Object& operator=(Object&& rhs) {
         _str.swap(rhs._str);
-        std::cout << "name: "<< _str << " move operator" << std::endl;
+        cout << "name: "<< _str << " move operator" << endl;
         return *this;
     }
     
-    void print() const { std::cout << _str << std::endl; }
+    void print() const { cout << _str << endl; }
 
 private:
-    std::string _str;
+    string _str;
 };
 
 
@@ -61,7 +61,7 @@ private:
 void func(Object& obj) {
     //파라미터에서 const를 제거하면 사실은 이 것도 된다.
     //하지만 이것은 타입정의에 의해 약속된 것을 어긴 것이다. 잘못된 API 설계다.
-    Object tmp = std::move(obj);
+    Object tmp = move(obj);
 }
 
 void func(Object&& obj){
@@ -75,13 +75,13 @@ void process(const Object& obj) {
 }
 
 void process(Object&& obj) {
-    Object tmp = std::move(obj);
+    Object tmp = move(obj);
     obj.print();
 }
 
 template<typename T>
 void universal_reference(T&& t) {
-    process(std::forward<T>(t));
+    process(forward<T>(t));
 }
 
 //이런식으로 사용하면 안된다.
@@ -90,7 +90,7 @@ void universal_reference(T&& t) {
 Object func()
 {
     Object obj("local variable");
-    return std::move(obj);
+    return move(obj);
 }
 
 struct Factory
@@ -102,7 +102,7 @@ struct Factory
     
     Object get1() { return obj; }
     
-    Object&& get2() { return std::move(obj); }
+    Object&& get2() { return move(obj); }
     
     //    Object&& get2() {
     //        return obj;
@@ -119,7 +119,7 @@ struct Factory
 int main() {
 
     if(false) { //lvalue vs rvalue
-        std::vector<Object> v;
+        vector<Object> v;
         
         v.reserve(10);
         
@@ -129,7 +129,7 @@ int main() {
         //Object obj; //lvalue;;
         
         v.push_back(obj1); //복사 연산자 호출됨
-        v.push_back(std::move(obj2)); //이동 연산자 호출됨. lvalue를 rvalue로 형 변환 하였기 때문.
+        v.push_back(move(obj2)); //이동 연산자 호출됨. lvalue를 rvalue로 형 변환 하였기 때문.
         v.push_back(Object("obj3")); // obj3은 rvalue이기 때문에 이동 연산자 호출됨.
     }
     
@@ -144,30 +144,30 @@ int main() {
         Object obj("obj");
         
         //func(obj); //컴파일 오류. r-value만 받겠다는 뜻. 하지만 obj는 현재 lvalue임.
-        func(std::move(obj)); //OK
+        func(move(obj)); //OK
         func(Object("obj")); //OK
     }
     
     if(true) { //move sementic with stl
         Object obj1("obj1"), obj2("obj2"), obj3("obj3");
         
-        std::vector<Object> v1; // {std::move(obj1), std::move(obj2), std::move(obj3)};
+        vector<Object> v1; // {move(obj1), move(obj2), move(obj3)};
         
         v1.reserve(3);
-        v1.push_back(std::move(obj1)); v1.push_back(std::move(obj2)); v1.push_back(std::move(obj3));
+        v1.push_back(move(obj1)); v1.push_back(move(obj2)); v1.push_back(move(obj3));
 
-        std::vector<Object> v2;
-        std::cout << "[v1]: " << v1.size() << " " << "[v2]: " << v2.size() << std::endl;
+        vector<Object> v2;
+        cout << "[v1]: " << v1.size() << " " << "[v2]: " << v2.size() << endl;
 
         //v2 = v1;
-        v2 = std::move(v1);
+        v2 = move(v1);
         //v1.swap(v2);
         
-        std::cout << "[v1]: " << v1.size() << " " << "[v2]: " << v2.size() << std::endl;
+        cout << "[v1]: " << v1.size() << " " << "[v2]: " << v2.size() << endl;
     }
 
     // Object get1() { return obj; }
-    // Object&& get2() { return std::move(obj); }
+    // Object&& get2() { return move(obj); }
 
     if(false) {//반환 값.
         Factory factory;
@@ -189,14 +189,14 @@ int main() {
 //    template<typename T>
 //    void universal_reference(T&& t)
 //    {
-//        process(std::forward<T>(t));
+//        process(forward<T>(t));
 //    }
     
     if(false) { //universal reference
         Factory factory;
         
         Object obj("universal_reference");
-        universal_reference(std::move(obj));
+        universal_reference(move(obj));
         //universal_reference(obj);
         //universal_reference(factory.get2());
     }
