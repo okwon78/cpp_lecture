@@ -16,4 +16,4 @@ else()
     message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-add_executable(a.out rvalue.cpp)
+add_executable(a.out smart_pointer.cpp)
