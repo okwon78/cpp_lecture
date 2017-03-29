@@ -202,6 +202,8 @@ bool atomic_is_lock_free( shared_ptr<T> const * p );
 }//namespace toast {
 
 int main(){
+    std::cout << "## Smart Pointer ##" << std::endl;
+
     using namespace toast;
 
     chapter1();

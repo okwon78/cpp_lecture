@@ -117,6 +117,7 @@ struct Factory
 };
 
 int main() {
+    std::cout << "## Rvalue ##" << std::endl;
 
     if(false) { //lvalue vs rvalue
         vector<Object> v;
