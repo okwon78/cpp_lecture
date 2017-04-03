@@ -225,6 +225,22 @@ void chapter4_4()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void call(std::function<void()> callable)
+{
+    callable();
+}
+
+void chapter5()
+{
+    cout << endl << "5.function" << endl;
+
+    call(&global_print);
+    Object o;
+    call(bind(&Object::member_print, &o));
+    call([](){ cout << "Lambda print" << endl; });
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 int main()
 {
     std::cout << "## Callable Object ##" << std::endl;
@@ -238,6 +254,7 @@ int main()
     chapter4_2();
     chapter4_3();
     chapter4_4();
+    chapter5();
 
     return 0;
 }
