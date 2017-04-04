@@ -244,11 +244,38 @@ void chapter4_5()
         Object obj;
 
         func = [&](){
+            //obj를 참조
             obj.member_print();
         };
     }
-
+    
+    //obj는 파괴되었기 때문에 존재하지 않는다.
     func();
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//4.6 람다 리턴 타입
+void chapter4_6()
+{
+    //다음과 같이 반환 타입을 지정할 수 있다.
+    auto lambda1 = []() -> std::string {
+        std::string str("with returne type");
+        return str;
+    };
+
+    string str1 = lambda1();
+
+    cout << str1 << endl;
+
+    //하지만 타입 deduction이 수행되므로 선언하지 않아도 된다.
+    auto lambda2 = []() {
+        std::string str("without returne type");
+        return str;
+    };
+
+    string str2 = lambda2();
+
+    cout << str2 << endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +311,8 @@ int main()
     //chapter4_2();
     //chapter4_3();
     //chapter4_4();
-    chapter4_5();
+    //chapter4_5();
+    chapter4_6();
     //chapter5();
 
     return 0;
