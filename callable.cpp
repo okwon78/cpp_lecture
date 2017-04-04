@@ -5,7 +5,10 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //1. 함수 포인터
 
-void global_print(){ cout << "Global Print" << endl; }
+void global_print()
+{ 
+    cout << "Global Print" << endl; 
+}
 
 struct Object
 {
@@ -16,6 +19,7 @@ void chapter1()
 {
     cout << endl << "1. 함수 포인터" << endl;
     using PFunc = void(*)();
+
     PFunc pFunc = &global_print;
     pFunc();
 
@@ -91,12 +95,17 @@ void chapter2_3()
     Sum sum = for_each(begin(v), end(v), Sum());
     cout << sum.total() << endl;
 
+    // for(auto Iter = v.begin();Iter != v.end(); Iter++)
+    // {
+
+    // }
+
     int total = 0;
 
-    for(auto elem : v) {
+    for(auto&& elem : v) {
         total += elem;
     }
-
+    
     cout << total << endl;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,26 +145,26 @@ void mul(int& lhs, int rhs){
 void chapter4_1() {
     cout << endl << "4.1 Lambda" << endl;
     //[](){}
-
-    auto f1 = [](int x){ cout << x << endl;};
+    
+    auto f1 = [](int x)
+    { 
+        cout << x << endl;
+    };
     
     vector<int> v = { 1, 2, 3};
-
+    
     int sum = 0;
+    //참조 형태로 외부 변수를 사용한다.
     for_each(begin(v), end(v), [&sum](int elem){
         sum += elem;
     });
 
     cout << sum << endl;
     int num = 2;
+    //값 복사 방식으로 외부 변수를 사용한다.
     for_each(begin(v), end(v), [num](int& elem){
         elem += num;
     });
-
-    for(int elem : v)
-    {
-        cout << elem << endl;
-    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,9 +174,10 @@ void chapter4_2() {
 
     vector<int> v = { 1, 2, 3};
 
-     int sum = 0;
+    int sum = 0;
+    //sum 은 값 복사에 의해 상수이다. 
     for_each(begin(v), end(v), [=](int elem) mutable {
-        sum += elem;
+        sum += elem;    
     });
 
     cout <<"[=] " << sum << endl;
@@ -180,6 +190,7 @@ void chapter4_2() {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 struct Callable {
     
     template<typename T> 
@@ -192,6 +203,7 @@ void chapter4_3()
 {
      cout << endl << "4.3 Lambda" << endl;
     {
+        //C++14
         auto f = [](auto x){
             cout << x << endl;
         };
@@ -222,9 +234,25 @@ void chapter4_4()
         cout << elem << endl;
     });
 }
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void chapter4_5()
+{
+    std::function<void()> func;
+    
+    {
+        Object obj;
+
+        func = [&](){
+            obj.member_print();
+        };
+    }
+
+    func();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//5. std::function
 void call(std::function<void()> callable)
 {
     callable();
@@ -235,8 +263,10 @@ void chapter5()
     cout << endl << "5.function" << endl;
 
     call(&global_print);
+    
     Object o;
     call(bind(&Object::member_print, &o));
+    
     call([](){ cout << "Lambda print" << endl; });
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,16 +275,17 @@ int main()
 {
     std::cout << "## Callable Object ##" << std::endl;
     
-    chapter1();
-    chapter2_1();
-    chapter2_2();
-    chapter2_3();
-    chapter3();
-    chapter4_1();
-    chapter4_2();
-    chapter4_3();
-    chapter4_4();
-    chapter5();
+    //chapter1();
+    //chapter2_1();
+    //chapter2_2();
+    //chapter2_3();
+    //chapter3();
+    //chapter4_1();
+    //chapter4_2();
+    //chapter4_3();
+    //chapter4_4();
+    chapter4_5();
+    //chapter5();
 
     return 0;
 }
