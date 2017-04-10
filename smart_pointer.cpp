@@ -5,6 +5,9 @@
 #include <fstream>
 #include <exception>
 
+//C++14은 2014 12월 발표되어습니다.
+//clang++ 3.5와 g++ 5.0에서 C++14 풀스팩을 지원하고 있습니다.
+
 //This namespace would be in one of the header files for cpp files.
 namespace toast {
     using std::cout;

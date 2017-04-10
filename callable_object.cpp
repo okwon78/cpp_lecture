@@ -272,7 +272,7 @@ void chapter4_6()
         std::string str("without returne type");
         return str;
     };
-
+    
     string str2 = lambda2();
 
     cout << str2 << endl;

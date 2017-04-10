@@ -108,6 +108,7 @@ static_assert(std::is_same<decltype(lambda1(1)), int>(), "lambda1의 반환 타�
 static_assert(std::is_same<decltype(lambda1(1.f)), float>(), "lambda1의 반환 타입이 float 아닙니다.");
 static_assert(std::is_same<decltype(lambda1(1.)), double>(), "lambda1의 반환 타입이 double 아닙니다.");
 
+//The following is almost the same of the lambda above.
 template<typename T>
 struct Functor
 {
@@ -117,7 +118,7 @@ struct Functor
     }
 };
 
-//4. Relaxed constexpr restrictions.
+//Appendix. Relaxed constexpr restrictions.
 //이건 auto랑은 상관 없지만 type deduction하고 관련이 있는 놈이라 여기서 잠깐 다룹니다.
 //컴파일 시간에 실행됩니다. 즉 아래 함수는 그냥 int 숫자 하나로 치환됩니다.
 constexpr int compute_something_in_compile_time(int x)
