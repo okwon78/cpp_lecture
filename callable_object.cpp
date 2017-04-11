@@ -201,9 +201,9 @@ struct Callable {
 
 void chapter4_3()
 {
-     cout << endl << "4.3 Lambda" << endl;
+    cout << endl << "4.3 Lambda" << endl;
     {
-        //C++14
+        //C++14 Generic lambdas
         auto f = [](auto x){
             cout << x << endl;
         };

@@ -21,29 +21,31 @@ struct Object
     
     Object(const string& name) { 
         _str = name; 
+        cout << "name: "<< _str << " default constructor" << endl;
     }
     
-    //Copy
+    //Copy constructor
     Object(const Object& rhs) {
         _str = rhs._str;
         cout << "name: "<< _str << " copy constructor" << endl;
     }
     
-    //Move
+    //Move constructor
     Object(Object&& rhs) {
-        _str.swap(rhs._str);
+        //개인적으로는 아래 처럼 move사용하는 것 보다는 swap을 사용하는게 더 깔끔하다고 생각됨. (믿거나 말거나)
+        _str.swap(rhs._str); 
         //_str = move(rhs._str);
         cout << "name: "<< _str << " move constructor" << endl;
     }
     
-    //Copy
+    //Copy operator
     Object& operator=(const Object& rhs) {
         _str = rhs._str;
         cout << "name: "<< _str << " copy operator" << endl;
         return *this;
     }
     
-    //Move
+    //Move operator
     Object& operator=(Object&& rhs) {
         _str.swap(rhs._str);
         cout << "name: "<< _str << " move operator" << endl;

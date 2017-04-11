@@ -140,7 +140,15 @@ template<int V> struct Test {};
 //이걸 옛날에는 엄청 복잡하게 짰어야 했거든요.
 Test<compute_something_in_compile_time(5)> instance;
 
+struct unnamed_lambda
+{
+template<typename T, typename U>
+    auto operator()(T x, U y) const {return x + y;}
+};
+
 int main()
 {
-
+    //Generic lambdas
+    auto lambda1 = unnamed_lambda();
+    auto lambda2 =  [](auto x, auto y) { return x + y; };
 }
