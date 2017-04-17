@@ -5,39 +5,50 @@
 
 using namespace std;
 
-//C++14은 2014 12월 발표되어습니다.
-//clang++ 3.5와 g++ 5.0에서 C++14 풀스팩을 지원하고 있습니다.
+//Return Type deduction
+
+//This type deduction was added in C++14. It was in C++11 for lambdas only
+//In C++14, compiler can have the return type deduction as long as the body is visible.
 
 //1. Function return type deduction
 auto func1() {
-    return 0;
-}
-//auto == int
-static_assert(std::is_same<decltype(func1()), int>(), "func1 함수의 반환 타입이 int가 아닙니다.");
-
-auto func2() {
     string test("hello C++14");
     return test;
 }
 
 //auto == std::string
-static_assert(std::is_same<decltype(func2()), std::string>(), "func2 함수의 반환 타입이 std::string이 아닙니다.");
+static_assert(std::is_same<decltype(func1()), std::string>(), "func1 함수의 반환 타입이 std::string이 아닙니다.");
 
-const auto& func3() {
+const auto& func2() {
     static string test("hello C++14");
-    return test;
+    return test; 
 }
 
 //auto  == std::string
-static_assert(std::is_same<decltype(func3()), const std::string&>(), "func3 함수의 반환 타입이 const std::string&이 아닙니다.");
+static_assert(std::is_same<decltype(func2()), const std::string&>(), "func2 함수의 반환 타입이 const std::string&이 아닙니다.");
 
-auto& func4() {
+auto& func3() {
     static const string test("hello C++14");
     return test;
 }
 
 //auto  == const std::string
-static_assert(std::is_same<decltype(func4()), const std::string&>(), "func4 함수의 반환 타입이 const std::string&이 아닙니다.");
+static_assert(std::is_same<decltype(func3()), const std::string&>(), "func3 함수의 반환 타입이 const std::string&이 아닙니다.");
+
+auto&& func4_1()
+{
+    static string test("hello C++14");
+    return std::move(test);
+}
+
+static_assert(std::is_same<decltype(func4_1()), std::string&&>(), "func4_1 함수의 반환 타입이 std::string&&이 아닙니다.");
+
+auto&& func4_2() {
+    static string test("hello C++14");
+    return test;
+}
+
+static_assert(std::is_same<decltype(func4_2()), std::string&>(), "func4_2 함수의 반환 타입이 std::string&이 아닙니다.");
 
 template<typename T>
 struct SomeContainerWrapper
@@ -59,9 +70,10 @@ struct SomeContainerWrapper
     } 
 };
 
-//The following is very redundant
+//the following is very redundant.
+//In C++11, return type deduction is not possible.
 template<typename T1, typename T2, typename T3>
-auto FuncCPP11(T1 t1, T2 t2, T3 t3) -> decltype((t1 * t2) - (t2 * t3)) {
+auto FuncCPP11(T1 t1,  T2 t2, T3 t3) -> decltype((t1 * t2) - (t2 * t3)) {
     return (t1 * t2) - (t2 * t3);
 }
 
@@ -117,28 +129,6 @@ struct Functor
         return x * 2;
     }
 };
-
-//Appendix. Relaxed constexpr restrictions.
-//이건 auto랑은 상관 없지만 type deduction하고 관련이 있는 놈이라 여기서 잠깐 다룹니다.
-//컴파일 시간에 실행됩니다. 즉 아래 함수는 그냥 int 숫자 하나로 치환됩니다.
-constexpr int compute_something_in_compile_time(int x)
-{
-    int result(x);
-
-    for(int i(0); i <10; i++)
-        result += i;
-
-    if(result > 5) result += 10;
-
-    return result;
-}
-
-//템플릿의 정의는 컴파일 시간에 지정됩니다.
-template<int V> struct Test {};
-
-//이게 컴파일이 됩니다. 놀랍지 않으신가요?
-//이걸 옛날에는 엄청 복잡하게 짰어야 했거든요.
-Test<compute_something_in_compile_time(5)> instance;
 
 struct unnamed_lambda
 {

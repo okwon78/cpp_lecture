@@ -170,6 +170,16 @@ public:
     }
 };
 
+//5.1 shared_from_this can not be called in the constructor.
+struct Wedget : public enable_shared_from_this<Wedget>
+{
+    Wedget()
+    {
+        //BAD ACCESS
+        shared_from_this();
+    }
+};
+
 //6. casting of shared pointer
 class A {};
  

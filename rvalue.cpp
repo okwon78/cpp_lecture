@@ -176,15 +176,18 @@ int main() {
         Factory factory;
         
         {
+            //Object get1() { return obj; }
             Object o1 = factory.get1();
-            //복사 생성자가 호출되고 비효율 적이므로 실제로 잘 사용하지 않는다. 차라리 smart pointer를 사용하는 것이....
-            Object&& o2 = factory.get1(); //Object get1();
+            //복사 생성자가 호출되고 복사 비용이 비싸기 때문에 Object가 많은 데이터를 복사해야하는 경우 비효율적 이다.
+            //차라리 smart pointer를 사용하는 것이....
+            Object&& o2 = factory.get1();
             //복사 생성자가 호출되므로 의해서 이렇게 사용할 이유가 없다.
             o2.print();
         }
         {
+            //Object&& get2() { return move(obj); }
             Object o1 = factory.get2();   //정상 동작 factory 같은 개념으로 쓸 수 있음. 아주 나이스 함.
-            Object&& o2 = factory.get2(); // Object&& get2();
+            Object&& o2 = factory.get2();
             //o2는 포인터 같은 레퍼런스이다. private 멤버를 접근하게 되므로 이렇게 사용하지는 말자.
         }
     }

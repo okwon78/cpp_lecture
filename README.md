@@ -7,3 +7,6 @@
 ## 3. Rvalue: move semantics, perfect forward
 
 ## 4. auto, decltype
+
+## 5. Miscellaneous
+

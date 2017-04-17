@@ -3,6 +3,26 @@
 
 using namespace std;
 
+//1.Type Deduction
+// - Remove redundancy (코드의 수명과 직결되는 개발자만 알아보는 코딩 실력?)
+// - Improve safety 
+// - Efficiency
+
+//2. Examples of type deduction
+// - Converting constructors (non-explicit) : std::string str = "Hello world"
+// - Implicit conversion operators : CString
+// - Overloaded functions
+// - template parameters
+// - auto
+// - decltype
+
+//1. The basic rule of auto
+// - auto 의 기본 타입 추론은 value이다.
+// - auto&& 의 타입 추론은 reference형이다. lvalue 참조 또는 rvalue참조가 될 수 있다.
+// - auto와 auto&&는 테플릿 파라미터 T, T&& 와 같다. (universial reference)
+// - decltype(auto)은 value형 추론 또는 reference형 모두 될 수 있다. (하지만 만능은 아님)
+
+
 int main()
 {
     //auto는 type deduction입니다.
