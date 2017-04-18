@@ -117,7 +117,7 @@ decltype(auto) func7(std::string&& str) {
     return std::move(str); //rvalue;
 }
 
-//decltype(auto)는 적당히게 rvalue형으로 반환형을 지정하였다.
+//decltype(auto)는 return 타입을 확인하여 rvalue형으로 반환형을 지정하였다.
 static_assert(std::is_same<decltype(func7("test")), std::string&&>(), "func7 함수의 반환 타입이 std::string&&이 아닙니다.");
 
 //3. Generic lambda
