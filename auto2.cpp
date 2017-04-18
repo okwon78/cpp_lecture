@@ -30,7 +30,7 @@ static_assert(std::is_same<decltype(func2()), const std::string&>(), "func2 함�
 auto& func3() {
     static const string test("hello C++14");
     return test;
-}
+} 
 
 //auto  == const std::string
 static_assert(std::is_same<decltype(func3()), const std::string&>(), "func3 함수의 반환 타입이 const std::string&이 아닙니다.");
@@ -38,14 +38,14 @@ static_assert(std::is_same<decltype(func3()), const std::string&>(), "func3 함�
 auto&& func4_1()
 {
     static string test("hello C++14");
-    return std::move(test);
+    return std::move(test); //rvalue
 }
 
 static_assert(std::is_same<decltype(func4_1()), std::string&&>(), "func4_1 함수의 반환 타입이 std::string&&이 아닙니다.");
 
 auto&& func4_2() {
     static string test("hello C++14");
-    return test;
+    return test; //lvalue
 }
 
 static_assert(std::is_same<decltype(func4_2()), std::string&>(), "func4_2 함수의 반환 타입이 std::string&이 아닙니다.");
@@ -84,13 +84,16 @@ auto FuncCPP11(T1 t1, T2 t2, T3 t3) {
 }
 
 //2. decltype(auto)
-// auto는 참조형이 아닌 타입을 나타낸다.
-// auto&&는 참조형 타입을 나타낸다.
+// auto는 참조형이 아닌 타입을 나타낸다. (복사 생성자)
+// auto&는 lvalue 참조 타입을 나타낸다.
+// auto&&는 lvalue 또는 rvalue 참조형 타입을 나타낸다.
 // decltype(auto)는 상황에 맞게 참조형 또는 밸류형태의 타입을 나타낸다.
 
+//반환형 auto == std::string
 auto func5() {
     static const std::string str("Hello");
-    auto& result(str); //강제로 참조형으로 변경하였다. auto == const std::string
+    auto& result(str); //강제로 참조형으로 변경하였다.
+    //result 타입은 const std::stirng&
     return result;
 }
 
@@ -98,9 +101,11 @@ auto func5() {
 //레퍼런스 타입을 반환했지만, 여전히 밸류 타입의 반환형을 가진다. 
 static_assert(std::is_same<decltype(func5()), std::string>(), "func5 함수의 반환 타입이 std::string이 아닙니다.");
 
+//decltype(result) = const std::string&
 decltype(auto) func6() {
     static const std::string str("Hello");
-    auto& result(str); //auto == const std::string
+    auto& result(str);
+    //result의 타입은 const std::string& 이다.
     return result;
 }
 
@@ -109,8 +114,9 @@ decltype(auto) func6() {
 static_assert(std::is_same<decltype(func6()), const std::string&>(), "func6 함수의 반환 타입이 std::string&이 아닙니다.");
 
 decltype(auto) func7(std::string&& str) {
-    return std::move(str);
+    return std::move(str); //rvalue;
 }
+
 //decltype(auto)는 적당히게 rvalue형으로 반환형을 지정하였다.
 static_assert(std::is_same<decltype(func7("test")), std::string&&>(), "func7 함수의 반환 타입이 std::string&&이 아닙니다.");
 
